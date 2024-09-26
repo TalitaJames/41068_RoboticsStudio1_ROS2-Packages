@@ -1,12 +1,12 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/laser_scan.hpp>
 
-class LaserScanProcessor : public rclcpp::Node
+class NthLaserScan : public rclcpp::Node
 {
 public:
-    LaserScanProcessor() : Node("laser_scan_processor"){
+    NthLaserScan() : Node("laser_scan_processor"){
         scan_sub_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
-            "/scan", 10, std::bind(&LaserScanProcessor::scanCallback, this, std::placeholders::_1));
+            "/scan", 10, std::bind(&NthLaserScan::scanCallback, this, std::placeholders::_1));
 
         scan_nth_pub = this->create_publisher<sensor_msgs::msg::LaserScan>("/scan_nth", 10); // Make a new publisher
     }
@@ -46,7 +46,7 @@ private:
 int main(int argc, char *argv[])
 {
     rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<LaserScanProcessor>());
+    rclcpp::spin(std::make_shared<NthLaserScan>());
     rclcpp::shutdown();
     return 0;
 }
