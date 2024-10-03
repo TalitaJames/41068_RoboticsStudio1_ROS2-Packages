@@ -10,12 +10,17 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
-add_executable(exclude_object src/exclude_object.cpp)                
+add_executable(exclude_object src/exclude_object.cpp)
 ament_target_dependencies(exclude_object rclcpp sensor_msgs)
+install(TARGETS exclude_object DESTINATION lib/${PROJECT_NAME})
+
+add_executable(sample src/sample.cpp)                
+ament_target_dependencies(sample rclcpp sensor_msgs)
+install(TARGETS sample DESTINATION lib/${PROJECT_NAME})
 
 add_executable(nth_scan src/nth_scan.cpp)
 ament_target_dependencies(nth_scan rclcpp sensor_msgs)
-
+install(TARGETS nth_scan DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -28,5 +33,7 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+include_directories(include)
 
 ament_package()
