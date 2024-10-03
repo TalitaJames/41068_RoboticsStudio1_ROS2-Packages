@@ -1,9 +1,23 @@
+/**
+ * @file nth_scan.cpp
+ * @author Talita James (account@talitajames.com)
+ * @brief Takes a laser scan, filters it to include only every nth data point then republishes it 
+ * @version 0.1
+ * @date 2024-10-02
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/laser_scan.hpp>
 
 class NthLaserScan : public rclcpp::Node
 {
 public:
+    /**
+     * @brief Construct a new Nth Laser Scan object
+     * 
+     */
     NthLaserScan() : Node("laser_scan_processor"){
         scan_sub_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
             "/scan", 10, std::bind(&NthLaserScan::scanCallback, this, std::placeholders::_1));
@@ -15,6 +29,12 @@ private:
     rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr scan_sub_;
     rclcpp::Publisher<sensor_msgs::msg::LaserScan>::SharedPtr scan_nth_pub;
 
+
+    /**
+     * @brief a repitious method called to gather subscriber data and publish new data
+     * 
+     * @param scan the laser scan message
+     */
     void scanCallback(const sensor_msgs::msg::LaserScan::SharedPtr scan){
         int nthIncrement = 1;
         int totalNumOfScans = scan -> ranges.size();
